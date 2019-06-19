@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:1.13.5-alpine
+    build: ./docker/nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./public_html/index.php:/var/www/public_html/index.php
+      - ./public_html/assets:/var/www/public_html/assets
+      - ./composer.json:/var/www/composer.json
+      - ./application:/var/www/application
+      - ./system:/var/www/system
+      - ./.htaccess:/var/www/.htaccess
+    links:
+      - php
+  
+  php:
+    container_name: php
+    image: php:7-fpm
+    build:
+      context: ./docker
+      dockerfile: ./php/Dockerfile
+    volumes:
+      - ./docker/php/php.ini:/etc/php/php.ini
+      - ./public_html/index.php:/var/www/public_html/index.php
+      - ./public_html/assets:/var/www/public_html/assets
+      - ./composer.json:/var/www/composer.json
+      - ./application:/var/www/application
+      - ./system:/var/www/system
+      - ./.htaccess:/var/www/.htaccess
+
+  golang:
+    container_name: golang
+    image: 'golang:1.12'
+    build:
+      context: ./docker
+      dockerfile: ./golang/Dockerfile
+    volumes:
+      - ./docker/golang:/etc/golang
+      - ./public_html/assets/go/scraper:/var/www/public_html/assets/go/scraper
+  
+  python3:
+    container_name: python3
+    image: python:3.7
+    build:
+      context: ./docker
+      dockerfile: ./python3/Dockerfile
+    volumes:
+      - ./docker/python3:/etc/python3
+      - ./public_html/assets/python/main.py:/var/www/public_html/assets/python/main.py

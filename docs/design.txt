@@ -1,0 +1,11 @@
+【フロントエンド】
+・HTML5
+・CSSS3
+・Bootstrap
+・JavaScript
+・jQuery
+
+【バックエンド】
+・PHP
+・CodeIgniter
+・(Python, MatLAB, SSD...)
