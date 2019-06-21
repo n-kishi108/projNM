@@ -29,11 +29,12 @@ func main() {
 			continue
 		}
 		//imgタグのsrc属性が存在していれば、画像パスを配列に追加する
-		selection := doc.Find("img")
-		attr, exists := selection.Attr("src")
-		if exists {
-			img_list = append(img_list, attr)
-		}
+		doc.Find("img").Each(func(_ int, selection *goquery.Selection) {
+			attr, exists := selection.Attr("src")
+			if exists {
+				img_list = append(img_list, attr)
+			}
+		})
 	}
 
 	//出力
